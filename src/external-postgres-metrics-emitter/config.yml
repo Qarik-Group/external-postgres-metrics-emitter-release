@@ -1,0 +1,6 @@
+loggregator:
+  metron_address: 127.0.0.1:3458
+  tls:
+    key_file: "./metron.key"
+    cert_file: "./metron.crt"
+    ca_file: "./metron.ca"
