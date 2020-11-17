@@ -1,0 +1,5 @@
+name: external-postgres-metrics-emitter
+blobstore:
+  provider: local
+  options:
+    blobstore_path: final_blobs
