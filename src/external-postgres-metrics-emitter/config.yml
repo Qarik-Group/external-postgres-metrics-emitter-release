@@ -1,9 +1,9 @@
 loggregator:
-  metron_address: 127.0.0.1:3458
+  metron_address: 127.0.0.1:3459
   tls:
-    key_file: "./metron.key"
-    cert_file: "./metron.crt"
-    ca_file: "./metron.ca"
+    key_file: "./loggregator_agent.key"
+    cert_file: "./loggregator_agent.crt"
+    ca_file: "./loggregator_ca.crt"
 database:
   host: 127.0.0.1
   port: 5432
