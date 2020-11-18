@@ -1,0 +1,10 @@
+---
+name: external-postgres-metrics-emitter
+dependencies:
+- golang-1-linux
+
+files:
+- external-postgres-metrics-emitter/**/*.go
+- external-postgres-metrics-emitter/vendor/**/*
+- external-postgres-metrics-emitter/go.mod
+- external-postgres-metrics-emitter/go.sum

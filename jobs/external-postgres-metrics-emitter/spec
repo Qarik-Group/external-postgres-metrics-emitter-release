@@ -1,0 +1,32 @@
+---
+name: external-postgres-metrics-emitter
+
+templates:
+  bpm.yml: config/bpm.yml
+  config.yml.erb: config/config.yml
+  metron_client_ca.crt.erb: config/certs/metron_client/ca.crt
+  metron_client.crt.erb: config/certs/metron_client/client.crt
+  metron_client.key.erb: config/certs/metron_client/client.key
+
+packages:
+- external-postgres-metrics-emitter
+
+properties:
+  external_postgres_metrics_emitter.loggregator.metron_address:
+    description: "IP address and port where the metron agent is running"
+    default: "127.0.0.1:3458"
+  external_postgres_metrics_emitter.loggregator.tls.cert:
+    description: "PEM-encoded tls client certificate to connect to loggregator ingress client"
+  external_postgres_metrics_emitter.loggregator.tls.key:
+    description: "PEM-encoded tls client key to connect to loggregator ingress client"
+  external_postgres_metrics_emitter.loggregator.tls.ca_cert:
+    description: "PEM-encoded ca certificate of loggregator ingress client"
+  external_postgres_metrics_emitter.database.host:
+    description: "Database host"
+  external_postgres_metrics_emitter.database.port:
+    description: "Database port"
+  external_postgres_metrics_emitter.database.username:
+    description: "Database username"
+  external_postgres_metrics_emitter.database.password:
+    description: "Database password"
+

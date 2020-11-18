@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -ex
+
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
+export GOPATH=/var/vcap
+
+cd external-postgres-metrics-emitter
+
+go build -o ${BOSH_INSTALL_TARGET}/bin/external-postgres-metrics-emitter
+
+cat <<EOT > ${BOSH_INSTALL_TARGET}/bin/external-postgres-metrics-emitter.sh
+#!/usr/bin/env bash
+
+${BOSH_INSTALL_TARGET}/bin/external-postgres-metrics-emitter \$@
+EOT
+
+chmod +x ${BOSH_INSTALL_TARGET}/bin/external-postgres-metrics-emitter.sh

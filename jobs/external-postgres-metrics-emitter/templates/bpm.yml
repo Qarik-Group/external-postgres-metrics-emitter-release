@@ -1,0 +1,5 @@
+processes:
+- name: external-postgres-metrics-emitter
+  executable: /var/vcap/jobs/external-postgres-metrics-emitter/packages/external-postgres-metrics-emitter/bin/external-postgres-metrics-emitter.sh
+  args:
+  - /var/vcap/jobs/external-postgres-metrics-emitter/config/config.yml

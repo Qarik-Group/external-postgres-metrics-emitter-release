@@ -1,0 +1,5 @@
+check process rabbitmq-metrics-emitter
+  with pidfile /var/vcap/sys/run/bpm/rabbitmq-metrics-emitter/rabbitmq-metrics-emitter.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start rabbitmq-metrics-emitter"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop rabbitmq-metrics-emitter"
+  group vcap
