@@ -16,7 +16,7 @@ type StatementStat struct {
 	Timestamp         time.Time
 	UserID            int
 	DbID              int
-	DbName            string `sql:"db_name"`
+	DbName            string `sql:"datname"`
 	QueryID           int64
 	Query             string
 	Calls             int64
