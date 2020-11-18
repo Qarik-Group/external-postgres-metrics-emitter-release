@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/kisielk/sqlstruct"
 	_ "github.com/lib/pq"
@@ -26,6 +27,7 @@ func Connect(config config.DatabaseConfig) (*Client, error) {
 }
 
 func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) {
+	now := time.Now()
 	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(
 		"SELECT %s FROM pg_stat_statements",
 		sqlstruct.Columns(StatementStat{})))
@@ -48,6 +50,7 @@ func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) 
 		if stat.Query == resetStatsStatementQuery {
 			continue
 		}
+		stat.Timestamp = now
 		stats = append(stats, stat)
 	}
 	// Check for errors from iterating over rows.

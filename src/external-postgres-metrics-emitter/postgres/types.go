@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"database/sql"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -37,4 +38,5 @@ type StatementStat struct {
 	Query   string `sql:"query"`
 	QueryID int    `sql:"queryid"`
 	Calls   int    `sql:"calls"`
+	Timestamp         time.Time `sql:"-"`
 }
