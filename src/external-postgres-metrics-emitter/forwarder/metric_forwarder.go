@@ -47,8 +47,9 @@ func (mf *metricForwarder) EmitMetric(stat *postgres.StatementStat) {
 	mf.logger.Debug("custom-metric-emit-request-received:", lager.Data{"stat": stat})
 
 	options := []loggregator.EmitGaugeOption{
-		loggregator.WithGaugeValue("pg_stat_statement_mean_time", stat.MeanTime, "seconds"),
 		loggregator.WithGaugeSourceInfo(string(stat.QueryID), stat.Source),
+		loggregator.WithGaugeValue("mean_time", stat.MeanTime, "seconds"),
+		loggregator.WithEnvelopeTag("query", stat.Query),
 	}
 	mf.client.EmitGauge(options...)
 }
