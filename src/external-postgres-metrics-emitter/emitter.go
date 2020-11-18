@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -10,6 +11,7 @@ import (
 
 	"code.cloudfoundry.org/lager"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
 	// "github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/forwarder"
 )
 
@@ -37,6 +39,13 @@ func main() {
 	// 	logger.Fatal("Couldn't create metric-forwarder", err)
 	// }
 
+	db, err := postgres.Connect(config.DatabaseConfig)
+	if err != nil {
+		logger.Fatal("Failed to connect to database", err)
+	}
+
+	ctx := context.Background()
+
 	ticker := time.NewTicker(5 * time.Second)
 	quit := make(chan struct{})
 
@@ -48,8 +57,15 @@ func main() {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println("hello loop")
-				fmt.Println(config.LoggregatorConfig.MetronAddress)
+				ctx, _ := context.WithCancel(ctx)
+
+				stats, err := db.GetStatsAndReset(ctx)
+				if err != nil {
+					logger.Error("Failed to get stats from database", err)
+				}
+
+				fmt.Printf("%+v\n\n", stats)
+
 				// vhosts, err := managementClient.GetVhosts()
 				// if err != nil {
 				// 	logger.Error("Couldn't get vhosts", err)

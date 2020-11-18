@@ -8,7 +8,9 @@ require (
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	code.cloudfoundry.org/rfc5424 v0.0.0-20180905210152-236a6d29298a // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/kisielk/sqlstruct v0.0.0-20201105191214-5f3e10d3ab46
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/lib/pq v1.8.0
 	github.com/onsi/ginkgo v1.13.0 // indirect
 	golang.org/x/net v0.0.0-20200625001655-4c5254603344 // indirect
 	golang.org/x/sys v0.0.0-20200610111108-226ff32320da // indirect

@@ -4,3 +4,9 @@ loggregator:
     key_file: "./metron.key"
     cert_file: "./metron.crt"
     ca_file: "./metron.ca"
+database:
+  host: 127.0.0.1
+  port: 5432
+  name: postgres
+  username: postgres
+  password: postgres

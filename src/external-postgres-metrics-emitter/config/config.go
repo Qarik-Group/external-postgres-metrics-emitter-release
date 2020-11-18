@@ -8,11 +8,19 @@ import (
 
 type Config struct {
 	LoggregatorConfig LoggregatorConfig `yaml:"loggregator"`
+	DatabaseConfig    DatabaseConfig    `yaml:"database"`
 }
 
 type LoggregatorConfig struct {
 	MetronAddress string   `yaml:"metron_address"`
 	TLS           TLSCerts `yaml:"tls"`
+}
+
+type DatabaseConfig struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 type TLSCerts struct {
