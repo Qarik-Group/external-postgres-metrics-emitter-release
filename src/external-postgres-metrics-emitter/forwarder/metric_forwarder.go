@@ -7,10 +7,6 @@ import (
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
 )
 
-type MetricForwarder interface {
-	// EmitMetric(*management.QueueInfo)
-}
-
 type metricForwarder struct {
 	client *loggregator.IngressClient
 	logger lager.Logger
