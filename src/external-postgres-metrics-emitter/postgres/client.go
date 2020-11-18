@@ -32,8 +32,9 @@ func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) 
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
-	_, err = c.db.QueryContext(ctx, resetStatsStatementQuery)
+	_, err = c.db.ExecContext(ctx, resetStatsStatementQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -55,4 +56,8 @@ func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) 
 	}
 
 	return stats, nil
+}
+
+func (c *Client) Close() error {
+	return c.db.Close()
 }
