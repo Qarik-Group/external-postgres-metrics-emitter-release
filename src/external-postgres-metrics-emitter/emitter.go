@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -11,6 +10,7 @@ import (
 
 	"code.cloudfoundry.org/lager"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/forwarder"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
 	// "github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/forwarder"
 )
@@ -33,11 +33,10 @@ func main() {
 		})
 	}
 
-	// metricsClient, err := forwarder.NewMetricForwarder(logger, &config)
-
-	// if err != nil {
-	// 	logger.Fatal("Couldn't create metric-forwarder", err)
-	// }
+	metricsClient, err := forwarder.NewMetricForwarder(logger, &config)
+	if err != nil {
+		logger.Fatal("Couldn't create metric-forwarder", err)
+	}
 
 	db, err := postgres.Connect(config.DatabaseConfig)
 	if err != nil {
@@ -64,29 +63,9 @@ func main() {
 					logger.Error("Failed to get stats from database", err)
 				}
 
-				fmt.Printf("%+v\n\n", stats)
-
-				// vhosts, err := managementClient.GetVhosts()
-				// if err != nil {
-				// 	logger.Error("Couldn't get vhosts", err)
-				// }
-				// instanceIds := []string{}
-				// for _, host := range vhosts {
-				// 	instanceIds = append(instanceIds, host.Name)
-				// }
-				// bindings, err := cfClient.AllBindings(instanceIds)
-				// if err != nil {
-				// 	logger.Error("Couldn't get bindings", err)
-				// }
-				// for _, binding := range bindings {
-				// 	queues, err := managementClient.GetQueues(binding.ServiceInstanceGUID)
-				// 	if err != nil {
-				// 		logger.Error("Couldn't get queues", err)
-				// 	}
-				// 	for _, info := range queues {
-				// 		metricsClient.EmitMetric(binding.AppGUID, &info)
-				// 	}
-				// }
+				for _, stat := range stats {
+					metricsClient.EmitMetric(&stat)
+				}
 			case <-quit:
 				ticker.Stop()
 				return

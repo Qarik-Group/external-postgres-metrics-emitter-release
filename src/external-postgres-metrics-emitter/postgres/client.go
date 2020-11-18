@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"time"
 
 	"github.com/kisielk/sqlstruct"
 	_ "github.com/lib/pq"
@@ -23,14 +22,13 @@ func Connect(config config.DatabaseConfig) (*Client, error) {
 		return nil, err
 	}
 
-	return &Client{db}, nil
+	host := fmt.Sprintf("%s:%d", config.Host, config.Port)
+
+	return &Client{db, host}, nil
 }
 
 func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) {
-	now := time.Now()
-	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(
-		"SELECT %s FROM pg_stat_statements",
-		sqlstruct.Columns(StatementStat{})))
+	rows, err := c.db.QueryContext(ctx, "SELECT NOW()::timestamp AS timestamp, * FROM pg_stat_statements JOIN (SELECT oid, datname FROM pg_database) AS db_name ON pg_stat_statements.dbid = db_name.oid")
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +48,7 @@ func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) 
 		if stat.Query == resetStatsStatementQuery {
 			continue
 		}
-		stat.Timestamp = now
+		stat.Source = fmt.Sprintf("%s/%s", c.host, stat.DbName)
 		stats = append(stats, stat)
 	}
 	// Check for errors from iterating over rows.

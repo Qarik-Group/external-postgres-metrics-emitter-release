@@ -8,13 +8,15 @@ import (
 )
 
 type Client struct {
-	db *sql.DB
+	db   *sql.DB
+	host string
 }
 
 type StatementStat struct {
-	Timestamp         time.Time `sql:"-"`
+	Timestamp         time.Time
 	UserID            int
 	DbID              int
+	DbName            string `sql:"db_name"`
 	QueryID           int64
 	Query             string
 	Calls             int64
@@ -36,4 +38,5 @@ type StatementStat struct {
 	TempBlksWritten   int64   `sql:"temp_blks_written"`
 	BlkReadTime       float64 `sql:"blk_read_time"`
 	BlkWriteTime      float64 `sql:"blk_write_time"`
+	Source            string  `sql:"-"`
 }

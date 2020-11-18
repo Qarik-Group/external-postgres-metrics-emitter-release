@@ -4,6 +4,7 @@ import (
 	"code.cloudfoundry.org/go-loggregator"
 	"code.cloudfoundry.org/lager"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
 )
 
 type MetricForwarder interface {
@@ -46,11 +47,12 @@ func NewMetricForwarder(logger lager.Logger, conf *config.Config) (*metricForwar
 	}, nil
 }
 
-// func (mf *metricForwarder) EmitMetric(info *postgres.QueueInfo) {
-// 	mf.logger.Debug("custom-metric-emit-request-received:", lager.Data{"info": info})
+func (mf *metricForwarder) EmitMetric(stat *postgres.StatementStat) {
+	mf.logger.Debug("custom-metric-emit-request-received:", lager.Data{"stat": stat})
 
-// 	options := []loggregator.EmitGaugeOption{
-// 		loggregator.WithGaugeValue(strings.Replace(info.Name, "-", "_", -1)+"_messages_ready", info.MessagesReady, "msgs"),
-// 	}
-// 	mf.client.EmitGauge(options...)
-// }
+	options := []loggregator.EmitGaugeOption{
+		loggregator.WithGaugeValue("pg_stat_statement_mean_time", stat.MeanTime, "seconds"),
+		loggregator.WithGaugeSourceInfo(string(stat.QueryID), stat.Source),
+	}
+	mf.client.EmitGauge(options...)
+}
