@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	logger := lager.NewLogger("rabbitmq-metrics-emitter")
+	logger := lager.NewLogger("external-postgres-metrics-emitter")
 	logger.RegisterSink(lager.NewWriterSink(os.Stdout, lager.DEBUG))
 	logger.RegisterSink(lager.NewWriterSink(os.Stderr, lager.ERROR))
 

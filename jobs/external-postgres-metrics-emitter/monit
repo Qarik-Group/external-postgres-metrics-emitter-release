@@ -1,5 +1,5 @@
-check process rabbitmq-metrics-emitter
-  with pidfile /var/vcap/sys/run/bpm/rabbitmq-metrics-emitter/rabbitmq-metrics-emitter.pid
-  start program "/var/vcap/jobs/bpm/bin/bpm start rabbitmq-metrics-emitter"
-  stop program "/var/vcap/jobs/bpm/bin/bpm stop rabbitmq-metrics-emitter"
+check process external-postgres-metrics-emitter
+  with pidfile /var/vcap/sys/run/bpm/external-postgres-metrics-emitter/external-postgres-metrics-emitter.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start external-postgres-metrics-emitter"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop external-postgres-metrics-emitter"
   group vcap
