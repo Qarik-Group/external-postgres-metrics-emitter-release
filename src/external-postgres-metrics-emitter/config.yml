@@ -1,5 +1,5 @@
 loggregator:
-  metron_address: 127.0.0.1:3459
+  address: 127.0.0.1:3459
   tls:
     key_file: "./loggregator_agent.key"
     cert_file: "./loggregator_agent.crt"

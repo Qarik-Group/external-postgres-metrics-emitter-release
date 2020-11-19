@@ -20,9 +20,11 @@ instance_groups:
         password: ((database.password))
   - name: loggregator_agent
     release: loggregator-agent
-    properties:
+    consumes:
       doppler:
-        override_url: ((doppler_url))
+        from: doppler
+        deployment: ((cf_deployment_name))
+    properties:
       grpc_port: 3459
       disable_udp: true
       loggregator:
