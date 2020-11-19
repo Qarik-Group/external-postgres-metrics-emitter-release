@@ -10,6 +10,7 @@ import (
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
 )
 
+const enableStatsStatementQuery = "CREATE EXTENSION IF NOT EXISTS pg_stat_statements"
 const resetStatsStatementQuery = "SELECT pg_stat_statements_reset()"
 
 func Connect(config config.DatabaseConfig) (*Client, error) {
@@ -18,6 +19,11 @@ func Connect(config config.DatabaseConfig) (*Client, error) {
 		config.Host, config.Port, config.Username, config.Password)
 
 	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = db.Exec(enableStatsStatementQuery)
 	if err != nil {
 		return nil, err
 	}
