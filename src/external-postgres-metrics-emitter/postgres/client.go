@@ -28,7 +28,7 @@ func Connect(config config.DatabaseConfig) (*Client, error) {
 }
 
 func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) {
-	rows, err := c.db.QueryContext(ctx, "SELECT NOW()::timestamp AS timestamp, * FROM pg_stat_statements JOIN (SELECT oid, datname FROM pg_database) AS db_name ON pg_stat_statements.dbid = db_name.oid")
+	rows, err := c.db.QueryContext(ctx, "SELECT * FROM pg_stat_statements JOIN (SELECT oid, datname FROM pg_database) AS db_name ON pg_stat_statements.dbid = db_name.oid")
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *Client) GetStatsAndReset(ctx context.Context) ([]StatementStat, error) 
 		if stat.Query == resetStatsStatementQuery {
 			continue
 		}
-		stat.Source = fmt.Sprintf("%s/%s", c.host, stat.DbName)
+		stat.Host = c.host
 		stats = append(stats, stat)
 	}
 	// Check for errors from iterating over rows.

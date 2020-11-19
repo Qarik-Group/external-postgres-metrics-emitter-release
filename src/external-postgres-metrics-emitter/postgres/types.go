@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"database/sql"
-	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -13,7 +12,6 @@ type Client struct {
 }
 
 type StatementStat struct {
-	Timestamp         time.Time
 	UserID            int
 	DbID              int
 	DbName            string `sql:"datname"`
@@ -38,5 +36,5 @@ type StatementStat struct {
 	TempBlksWritten   int64   `sql:"temp_blks_written"`
 	BlkReadTime       float64 `sql:"blk_read_time"`
 	BlkWriteTime      float64 `sql:"blk_write_time"`
-	Source            string  `sql:"-"`
+	Host              string  `sql:"-"`
 }
