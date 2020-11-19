@@ -1,0 +1,59 @@
+name: external-postgres-metrics-emitter
+instance_groups:
+- azs: [z1]
+  instances: 1
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: external-postgres-metrics-emitter
+    release: external-postgres-metrics-emitter
+    properties:
+      loggregator:
+        tls:
+          key: ((loggregator_tls_agent.private_key))
+          cert: ((loggregator_tls_agent.certificate))
+          ca_cert: ((loggregator_tls_agent.ca))
+      database:
+        host: ((database.host))
+        port: ((database.port))
+        username: ((database.username))
+        password: ((database.password))
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      doppler:
+        override_url: ((doppler_url))
+      grpc_port: 3459
+      disable_udp: true
+      loggregator:
+        tls:
+          ca_cert: "((loggregator_tls_agent.ca))"
+          agent:
+            cert: "((loggregator_tls_agent.certificate))"
+            key: "((loggregator_tls_agent.private_key))"
+      metrics:
+        ca_cert: "((loggregator_agent_metrics_tls.ca))"
+        cert: "((loggregator_agent_metrics_tls.certificate))"
+        key: "((loggregator_agent_metrics_tls.private_key))"
+        server_name: loggregator_agent_metrics
+  name: external-postgres-metrics-emitter
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: default
+releases:
+- name: external-postgres-metrics-emitter
+  version: latest
+- name: loggregator-agent
+  version: latest
+- name: bpm
+  version: latest
+stemcells:
+- alias: default
+  os: ubuntu-xenial
+  version: latest
+update:
+  canaries: 2
+  canary_watch_time: 5000-60000
+  max_in_flight: 1
+  update_watch_time: 5000-60000

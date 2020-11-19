@@ -1,11 +1,11 @@
 loggregator:
-  metron_address: <%= p('external_postgres_metrics_emitter.loggregator.metron_address') %>
+  address: <%= p('loggregator.address') %>
   tls:
-    key_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/metron_client/client.key"
-    cert_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/metron_client/client.crt"
-    ca_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/metron_client/ca.crt"
+    key_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.key"
+    cert_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.crt"
+    ca_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_ca.crt"
 database:
-  host: <%= p('external_postgres_metrics_emitter.database.host') %>
-  port: <%= p('external_postgres_metrics_emitter.database.port') %>
-  username: <%= p('external_postgres_metrics_emitter.database.username') %>
-  password: <%= p('external_postgres_metrics_emitter.database.password') %>
+  host: <%= p('database.host') %>
+  port: <%= p('database.port') %>
+  username: <%= p('database.username') %>
+  password: <%= p('database.password') %>

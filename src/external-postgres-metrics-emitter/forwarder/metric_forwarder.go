@@ -29,7 +29,7 @@ func NewMetricForwarder(logger lager.Logger, conf *config.Config) (*metricForwar
 
 	client, err := loggregator.NewIngressClient(
 		tlsConfig,
-		loggregator.WithAddr(conf.LoggregatorConfig.MetronAddress),
+		loggregator.WithAddr(conf.LoggregatorConfig.Address),
 		loggregator.WithTag("origin", METRICS_FORWARDER_ORIGIN),
 		loggregator.WithLogger(newLoggregatorGRPCLogger(logger.Session("loggregator"))),
 	)

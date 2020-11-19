@@ -1,7 +1,7 @@
 ---
 name: external-postgres-metrics-emitter
 dependencies:
-- golang-1-linux
+- golang-1.15-linux
 
 files:
 - external-postgres-metrics-emitter/**/*.go

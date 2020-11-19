@@ -12,8 +12,8 @@ type Config struct {
 }
 
 type LoggregatorConfig struct {
-	MetronAddress string   `yaml:"metron_address"`
-	TLS           TLSCerts `yaml:"tls"`
+	Address string   `yaml:"address"`
+	TLS     TLSCerts `yaml:"tls"`
 }
 
 type DatabaseConfig struct {
