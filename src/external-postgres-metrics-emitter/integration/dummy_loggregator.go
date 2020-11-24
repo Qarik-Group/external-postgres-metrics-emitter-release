@@ -24,6 +24,8 @@ var (
 type DummyLoggregator struct {
 	inner    *grpc.Server
 	listener net.Listener
+	received []string
+	server   *Server
 }
 
 func NewDummyLoggregator() (*DummyLoggregator, error) {
@@ -44,9 +46,14 @@ func NewDummyLoggregator() (*DummyLoggregator, error) {
 			return nil, err
 		}
 		grpcServer := grpc.NewServer(grpc.Creds(transportCreds))
-		loggregator_v2.RegisterIngressServer(grpcServer, &Server{})
-		return &DummyLoggregator{inner: grpcServer, listener: listener}, nil
+		server := &Server{}
+		loggregator_v2.RegisterIngressServer(grpcServer, server)
+		return &DummyLoggregator{inner: grpcServer, listener: listener, server: server}, nil
 	}
+}
+
+func (d *DummyLoggregator) Received() []string {
+	return d.server.received
 }
 
 func (d *DummyLoggregator) Start() error {
@@ -57,7 +64,9 @@ func (d *DummyLoggregator) Stop() {
 	d.inner.Stop()
 }
 
-type Server struct{}
+type Server struct {
+	received []string
+}
 
 func (s *Server) Sender(server loggregator_v2.Ingress_SenderServer) error {
 	for {
@@ -83,7 +92,7 @@ func (s *Server) BatchSender(server loggregator_v2.Ingress_BatchSenderServer) er
 				log.Print(err)
 			}
 
-			log.Println(string((raw)))
+			s.received = append(s.received, string(raw))
 		}
 	}
 }
@@ -95,7 +104,7 @@ func (s *Server) Send(_ context.Context, b *loggregator_v2.EnvelopeBatch) (*logg
 			log.Print(err)
 		}
 
-		log.Println(string(raw))
+		s.received = append(s.received, string(raw))
 	}
 
 	return &loggregator_v2.SendResponse{}, nil

@@ -46,7 +46,7 @@ var _ = Describe("Emitter", func() {
 		stop = make(chan bool, 1)
 	})
 
-	FIt("End to end", func() {
+	It("End to end", func() {
 		result, err := db.Exec("SELECT * FROM pg_stat_statements LIMIT 1;")
 		Expect(err).ToNot(HaveOccurred())
 		rows, err := result.RowsAffected()
@@ -54,6 +54,10 @@ var _ = Describe("Emitter", func() {
 		Expect(rows).To(Equal(int64(1)))
 
 		go daemon.Run(logger, []string{"daemon", "./assets/config.yml"}, stop)
+
+		Eventually(func() []string {
+			return loggregator.Received()
+		}, "15s").Should(HaveLen(2))
 	})
 
 	AfterEach(func() {
