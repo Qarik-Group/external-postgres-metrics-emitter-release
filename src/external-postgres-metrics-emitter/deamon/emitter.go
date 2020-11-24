@@ -1,4 +1,4 @@
-package main
+package deamon
 
 import (
 	"context"
@@ -12,14 +12,9 @@ import (
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/forwarder"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
-	// "github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/forwarder"
 )
 
-func main() {
-	logger := lager.NewLogger("external-postgres-metrics-emitter")
-	logger.RegisterSink(lager.NewWriterSink(os.Stdout, lager.DEBUG))
-	logger.RegisterSink(lager.NewWriterSink(os.Stderr, lager.ERROR))
-
+func Run(logger lager.Logger, args []string) {
 	if len(os.Args) < 2 {
 		logger.Fatal("Missing argument - specify path to config file", errors.New("Missing config file path"))
 	}

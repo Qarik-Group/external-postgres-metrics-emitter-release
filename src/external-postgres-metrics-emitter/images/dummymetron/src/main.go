@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -10,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"code.cloudfoundry.org/go-loggregator/v8"
+	loggregator "code.cloudfoundry.org/go-loggregator/v8"
 	"code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2"
 )
 
@@ -61,15 +62,32 @@ func (s *Server) Sender(server loggregator_v2.Ingress_SenderServer) error {
 
 func (s *Server) BatchSender(server loggregator_v2.Ingress_BatchSenderServer) error {
 	for {
-		_, err := server.Recv()
+		envs, err := server.Recv()
 		if err != nil {
 			log.Print(err)
 			return nil
 		}
+
+		for _, e := range envs.Batch {
+			raw, err := json.Marshal(e)
+			if err != nil {
+				log.Print(err)
+			}
+
+			log.Println(string((raw)))
+		}
 	}
 }
 
-func (s *Server) Send(_ context.Context, e *loggregator_v2.EnvelopeBatch) (*loggregator_v2.SendResponse, error) {
-	log.Print(e.String())
-	return nil, nil
+func (s *Server) Send(_ context.Context, b *loggregator_v2.EnvelopeBatch) (*loggregator_v2.SendResponse, error) {
+	for _, e := range b.Batch {
+		raw, err := json.Marshal(e)
+		if err != nil {
+			log.Print(err)
+		}
+
+		log.Println(string(raw))
+	}
+
+	return &loggregator_v2.SendResponse{}, nil
 }

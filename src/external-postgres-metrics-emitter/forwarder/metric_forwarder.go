@@ -3,7 +3,7 @@ package forwarder
 import (
 	"strconv"
 
-	"code.cloudfoundry.org/go-loggregator"
+	"code.cloudfoundry.org/go-loggregator/v8"
 	"code.cloudfoundry.org/lager"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/postgres"
@@ -27,12 +27,13 @@ func NewMetricForwarder(logger lager.Logger, conf *config.Config) (*metricForwar
 		return &metricForwarder{}, err
 	}
 
-	client, err := loggregator.NewIngressClient(
-		tlsConfig,
-		loggregator.WithAddr(conf.LoggregatorConfig.Address),
-		loggregator.WithTag("origin", METRICS_FORWARDER_ORIGIN),
-		loggregator.WithLogger(newLoggregatorGRPCLogger(logger.Session("loggregator"))),
-	)
+	client, err := loggregator.
+		NewIngressClient(
+			tlsConfig,
+			loggregator.WithAddr(conf.LoggregatorConfig.Address),
+			loggregator.WithTag("origin", METRICS_FORWARDER_ORIGIN),
+			loggregator.WithLogger(newLoggregatorGRPCLogger(logger.Session("loggregator"))),
+		)
 
 	if err != nil {
 		logger.Error("could-not-create-loggregator-client", err, lager.Data{"config": conf})
