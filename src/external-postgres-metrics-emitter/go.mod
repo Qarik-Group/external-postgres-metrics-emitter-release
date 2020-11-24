@@ -12,7 +12,8 @@ require (
 	github.com/kisielk/sqlstruct v0.0.0-20201105191214-5f3e10d3ab46
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/lib/pq v1.8.0
-	github.com/onsi/ginkgo v1.13.0 // indirect
+	github.com/onsi/ginkgo v1.13.0
+	github.com/onsi/gomega v1.10.1
 	golang.org/x/net v0.0.0-20200625001655-4c5254603344 // indirect
 	golang.org/x/sys v0.0.0-20200610111108-226ff32320da // indirect
 	google.golang.org/grpc v1.30.0 // indirect
