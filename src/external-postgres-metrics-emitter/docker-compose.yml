@@ -13,14 +13,6 @@ services:
       - "POSTGRES_USERNAME=postgres"
       - "POSTGRES_DATABASE=postgres"
       - "ALLOW_EMPTY_PASSWORD=yes"
-
-  loggregator:
-    image: dummymetron
-    build: images/dummymetron
-    ports:
-      - "3459:3459"
-    command:
-    - "--grpc-port=3459"
 volumes:
   postgresql_data:
     driver: local

@@ -9,12 +9,21 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
+	"code.cloudfoundry.org/lager"
+
 	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/config"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/daemon"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/integration"
 )
 
 var _ = Describe("Emitter", func() {
-	var db *sql.DB
-	var conf config.Config
+	var (
+		db          *sql.DB
+		conf        config.Config
+		loggregator *integration.DummyLoggregator
+		logger      lager.Logger
+		stop        chan bool
+	)
 
 	BeforeEach(func() {
 		var err error
@@ -27,6 +36,14 @@ var _ = Describe("Emitter", func() {
 			dbConf.Host, dbConf.Port, dbConf.Username, dbConf.Password)
 		db, err = sql.Open("postgres", psqlInfo)
 		Expect(err).ToNot(HaveOccurred())
+		loggregator, err = integration.NewDummyLoggregator()
+		Expect(err).ToNot(HaveOccurred())
+		go loggregator.Start()
+		logger = lager.NewLogger("external-postgres-metrics-emitter")
+		logger.RegisterSink(lager.NewWriterSink(GinkgoWriter, lager.DEBUG))
+		logger.RegisterSink(lager.NewWriterSink(GinkgoWriter, lager.ERROR))
+
+		stop = make(chan bool, 1)
 	})
 
 	FIt("End to end", func() {
@@ -35,14 +52,15 @@ var _ = Describe("Emitter", func() {
 		rows, err := result.RowsAffected()
 		Expect(err).ToNot(HaveOccurred())
 		Expect(rows).To(Equal(int64(1)))
-		// run 1 scrape
-		// assert metron dumped json
-		// assert our query show up in dump
+
+		go daemon.Run(logger, []string{"daemon", "./assets/config.yml"}, stop)
 	})
 
 	AfterEach(func() {
 		var err error
 		err = db.Close()
 		Expect(err).ToNot(HaveOccurred())
+		loggregator.Stop()
+		stop <- true
 	})
 })

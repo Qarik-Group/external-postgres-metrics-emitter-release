@@ -1,9 +1,9 @@
 loggregator:
   address: 127.0.0.1:3459
   tls:
-    key_file: "./images/dummymetron/loggregator_agent.key"
-    cert_file: "./images/dummymetron/loggregator_agent.crt"
-    ca_file: "./images/dummymetron/loggregator_ca.crt"
+    key_file:  "./assets/loggregator_agent.key"
+    cert_file: "./assets/loggregator_agent.crt"
+    ca_file:  "./assets/loggregator_ca.crt"
 database:
   host: 127.0.0.1
   port: 5432

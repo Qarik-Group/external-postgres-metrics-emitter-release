@@ -2,9 +2,11 @@ package main
 
 import (
 	"os"
+	"os/signal"
+	"syscall"
 
 	"code.cloudfoundry.org/lager"
-	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/deamon"
+	"github.com/starkandwayne/external-postgres-metrics-emitter-release/src/external-postgres-metrics-emitter/daemon"
 )
 
 func main() {
@@ -12,5 +14,14 @@ func main() {
 	logger.RegisterSink(lager.NewWriterSink(os.Stdout, lager.DEBUG))
 	logger.RegisterSink(lager.NewWriterSink(os.Stderr, lager.ERROR))
 
-	deamon.Run(logger, os.Args)
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	stop := make(chan bool, 1)
+
+	go func() {
+		<-sigs
+		stop <- true
+	}()
+
+	daemon.Run(logger, os.Args, stop)
 }
