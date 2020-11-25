@@ -1,0 +1,36 @@
+meta:
+  name: external-postgres-metrics-emitter-release
+  target: pipes@bucc
+  url:     https://pipes.starkandwayne.com
+
+  bosh:
+    stemcell:
+      major: 621
+      cpi: warden-boshlite
+    target: ((thunder-dome.url))
+    username: ((thunder-dome.password))
+    password: ((thunder-dome.password))
+    cacert: ((thunder-dome.ca-certificate))
+
+  github:
+    owner: starkandwayne
+    repo:  external-postgres-metrics-emitter-release
+    private_key:  ((github_private_key))
+    access_token: ((github_acces_token))
+    webhook_token: ((github_webhook_token))
+
+  git: 
+    email: ci@starkandwayne.com
+    name: CI Bot
+
+  aws:
+    access_key: ((aws.access))
+    secret_key: ((aws.secret))
+
+  slack:
+    webhook: ((slack_webhook))
+    channel: "#botspam"
+
+  go:
+    version: 1.15
+    
