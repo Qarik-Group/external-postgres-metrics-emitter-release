@@ -4,3 +4,4 @@
 /manifest/vars.yml
 .envrc
 /config/private.yml
+/tmp
