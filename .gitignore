@@ -3,3 +3,4 @@
 /.dev_builds/
 /manifest/vars.yml
 .envrc
+/config/private.yml

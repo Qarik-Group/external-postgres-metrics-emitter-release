@@ -1,5 +1,5 @@
 name: external-postgres-metrics-emitter
 blobstore:
-  provider: local
+  provider: s3
   options:
-    blobstore_path: final_blobs
+    bucket_name: external-postgres-metrics-emitter-release
