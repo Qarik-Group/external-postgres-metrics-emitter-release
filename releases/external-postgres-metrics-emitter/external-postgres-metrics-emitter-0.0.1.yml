@@ -1,0 +1,27 @@
+name: external-postgres-metrics-emitter
+version: 0.0.1
+commit_hash: 5d59e13
+uncommitted_changes: false
+jobs:
+- name: external-postgres-metrics-emitter
+  version: b5239d14e178fdc733aec97c78f2804c6a0a533777d140f54c3bb69d79d0d179
+  fingerprint: b5239d14e178fdc733aec97c78f2804c6a0a533777d140f54c3bb69d79d0d179
+  sha1: sha256:8113335db7a63ac14a173c36294ff6e59da7407c09ad0111cc54997716d56d87
+  packages:
+  - external-postgres-metrics-emitter
+packages:
+- name: external-postgres-metrics-emitter
+  version: 47fef9221a2da185415eb0ebee488c066a113b37cf432ae293e15f42b2e01403
+  fingerprint: 47fef9221a2da185415eb0ebee488c066a113b37cf432ae293e15f42b2e01403
+  sha1: sha256:b3c09434a26301329cf5f4eaa52559e1b234f60a87f1a19347ed574a62e3fa1e
+  dependencies:
+  - golang-1.15-linux
+- name: golang-1.15-linux
+  version: 0ffaa4795b503db0d38263b64ea9b348f994b1dc89951c9e42be7ca6a19dedc9
+  fingerprint: 0ffaa4795b503db0d38263b64ea9b348f994b1dc89951c9e42be7ca6a19dedc9
+  sha1: sha256:707f304e6939b7f3ccf2da10274d84730d8957956f95041b6392672ab752cadb
+  dependencies: []
+license:
+  version: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  fingerprint: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  sha1: sha256:54e0ac59c5f8e76b4a19a90bdc2f06a1d1f86ab20c3caf144711eb84c919cd9b

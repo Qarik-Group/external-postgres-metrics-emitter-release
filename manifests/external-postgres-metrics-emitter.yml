@@ -43,19 +43,13 @@ instance_groups:
   - name: default
   stemcell: default
   vm_type: default
+
 releases:
 - name: external-postgres-metrics-emitter
-  version: latest
+  sha1: e8393403fbfecfd54cbaea70510105710c81af3b
+  url: https://github.com/starkandwayne/external-postgres-metrics-emitter-boshrelease/releases/download/v0.0.1/external-postgres-metrics-emitter-0.0.1.tgz
+  version: 0.0.1
 - name: loggregator-agent
   version: latest
 - name: bpm
   version: latest
-stemcells:
-- alias: default
-  os: ubuntu-xenial
-  version: latest
-update:
-  canaries: 2
-  canary_watch_time: 5000-60000
-  max_in_flight: 1
-  update_watch_time: 5000-60000
