@@ -1,7 +1,19 @@
-loggregator:
-  address: <%= p('loggregator.address') %>
-  tls:
-    key_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.key"
-    cert_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.crt"
-    ca_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_ca.crt"
-<%= p('databases').to_json %>
+<%=
+p('databases').each do |database|
+  unless database.key?("host") && database.key?("username") && database.key?("password")
+    abort("host, username and password fields are required for each database")
+  end
+end
+
+config = {
+  "loggregator" => {
+    "address" => p('loggregator.address'),
+    "tls" => {
+      "key_file" => "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.key",
+      "cert_file" => "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.crt",
+      "ca_file" => "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_ca.crt",
+    },
+  },
+  "databases" => p('databases'),
+}.to_json
+%>
