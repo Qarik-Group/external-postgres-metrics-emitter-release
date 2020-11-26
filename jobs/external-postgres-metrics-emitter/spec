@@ -21,13 +21,11 @@ properties:
     description: "PEM-encoded tls client key to connect to loggregator ingress client"
   loggregator.tls.ca_cert:
     description: "PEM-encoded ca certificate of loggregator ingress client"
-  database.host:
-    description: "Database host"
-  database.port:
-    description: "Database port"
-    default: 5432
-  database.username:
-    description: "Database username"
-  database.password:
-    description: "Database password"
-
+  databases:
+    description: "Array of database connections with host, port, username, password properties"
+    example:
+      databases:
+        - host: 127.0.0.1
+          port: 5432
+          username: postgres
+          password: postgres

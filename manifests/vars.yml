@@ -5,10 +5,10 @@ loggregator_tls_agent:
 loggregator_agent_metrics_tls:
   private_key: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/loggregator_agent_metrics_tls.private_key))
   certificate: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/loggregator_agent_metrics_tls.certificate))
-  ca: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/loggregator_agent_metrics_tls.ca))  
+  ca: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/loggregator_agent_metrics_tls.ca))
 cf_deployment_name: snw-rmakkelie-lab-cf
-database:
-  host: 10.128.136.70
+databases:
+- host: 10.128.136.70
   port: 5524
   username: superuser
-  password: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/superuser_password))  
+  password: ((/snw-rmakkelie-lab-bosh/snw-rmakkelie-lab-cf/superuser_password))

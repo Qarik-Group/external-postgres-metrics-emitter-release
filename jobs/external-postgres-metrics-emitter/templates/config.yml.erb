@@ -4,8 +4,4 @@ loggregator:
     key_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.key"
     cert_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_agent.crt"
     ca_file: "/var/vcap/jobs/external-postgres-metrics-emitter/config/certs/loggregator_ca.crt"
-database:
-  host: <%= p('database.host') %>
-  port: <%= p('database.port') %>
-  username: <%= p('database.username') %>
-  password: <%= p('database.password') %>
+<%= p('databases').to_json %>
