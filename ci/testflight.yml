@@ -26,8 +26,8 @@ instance_groups:
           key: ((loggregator_tls_agent.private_key))
           cert: ((loggregator_tls_agent.certificate))
           ca_cert: ((loggregator_tls_agent.ca))
-      database:
-        host: 127.0.0.1
+      databases:
+      - host: 127.0.0.1
         port: 5524
         username: superuser
         password: ((superuser_password))
@@ -60,7 +60,7 @@ instance_groups:
           ca_cert: "((loggregator_tls_doppler.ca))"
           doppler:
             cert: "((loggregator_tls_doppler.certificate))"
-            key: "((loggregator_tls_doppler.private_key))"         
+            key: "((loggregator_tls_doppler.private_key))"
   name: external-postgres-metrics-emitter
   networks:
   - name: default
@@ -84,7 +84,7 @@ releases:
 - name: postgres
   sha1: 0a9e4ad424f2ad9611dd1d3f387cc12ed7b71ee4
   url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=42
-  version: "42"  
+  version: "42"
 stemcells:
 - alias: default
   os: ubuntu-xenial
@@ -126,7 +126,7 @@ variables:
   type: certificate
   options:
     common_name: metricScraperCA
-    is_ca: true    
+    is_ca: true
 - name: loggregator_agent_metrics_tls
   type: certificate
   update_mode: converge
@@ -136,6 +136,6 @@ variables:
     alternative_names:
     - loggregator_agent_metrics
     extended_key_usage:
-    - server_auth    
+    - server_auth
 - name: superuser_password
   type: password

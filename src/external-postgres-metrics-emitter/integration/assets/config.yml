@@ -4,8 +4,8 @@ loggregator:
     key_file:  "./assets/loggregator_agent.key"
     cert_file: "./assets/loggregator_agent.crt"
     ca_file:  "./assets/loggregator_ca.crt"
-database:
-  host: 127.0.0.1
+databases:
+- host: 127.0.0.1
   port: 5432
   name: postgres
   username: postgres
