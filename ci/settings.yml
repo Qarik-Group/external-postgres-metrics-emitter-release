@@ -27,8 +27,8 @@ meta:
     name: CI Bot
 
   aws:
-    access_key: "\"((aws.access))\""
-    secret_key: "\"((aws.secret))\""
+    access_key: ((aws.access))
+    secret_key: ((aws.secret))
 
   slack:
     webhook: ((slack.webhook))
