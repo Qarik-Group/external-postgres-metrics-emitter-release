@@ -5,3 +5,5 @@
 .envrc
 /config/private.yml
 /tmp
+/releases/*.tgz
+/releases/**/*.tgz

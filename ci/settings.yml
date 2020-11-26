@@ -12,10 +12,13 @@ meta:
     password: ((thunder-dome.password))
     cacert: ((thunder-dome.ca-certificate))
 
+  manifest:
+    path: ci/testflight.yml
+
   github:
     owner: starkandwayne
     repo:  external-postgres-metrics-emitter-release
-    private_key:  ((github.private-key))
+    private_key: ((github.private-key))
     access_token: ((github.access-token))
     webhook_token: ((webhook.token))
 
@@ -24,11 +27,11 @@ meta:
     name: CI Bot
 
   aws:
-    access_key: ((aws.access))
-    secret_key: ((aws.secret))
+    access_key: "\"((aws.access))\""
+    secret_key: "\"((aws.secret))\""
 
   slack:
-    webhook: ((slack_webhook))
+    webhook: ((slack.webhook))
     channel: "#botspam"
 
   go:
