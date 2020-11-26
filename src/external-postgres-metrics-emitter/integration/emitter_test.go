@@ -29,7 +29,7 @@ var _ = Describe("Emitter", func() {
 		var err error
 		conf, err = config.LoadConfig("./assets/config.yml")
 		Expect(err).ToNot(HaveOccurred())
-		dbConf := conf.DatabaseConfig
+		dbConf := conf.DatabaseConfigs[0]
 
 		psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 			"password=%s dbname=postgres sslmode=disable",

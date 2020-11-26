@@ -18,21 +18,25 @@ func Run(logger lager.Logger, args []string, stop chan bool) {
 
 	configFilePath := args[1]
 
-	config, err := config.LoadConfig(configFilePath)
+	conf, err := config.LoadConfig(configFilePath)
 	if err != nil {
 		logger.Fatal("Reading config file", err, lager.Data{
 			"emitter-config-file-path": configFilePath,
 		})
 	}
 
-	metricsClient, err := forwarder.NewMetricForwarder(logger, &config)
+	metricsClient, err := forwarder.NewMetricForwarder(logger, &conf)
 	if err != nil {
 		logger.Fatal("Couldn't create metric-forwarder", err)
 	}
 
-	db, err := postgres.Connect(config.DatabaseConfig)
-	if err != nil {
-		logger.Fatal("Failed to connect to database", err)
+	var dbs []*postgres.Client
+	for _, dbConf := range conf.DatabaseConfigs {
+		db, err := postgres.Connect(dbConf)
+		if err != nil {
+			logger.Fatal("Failed to connect to database", err)
+		}
+		dbs = append(dbs, db)
 	}
 
 	ctx := context.Background()
@@ -46,13 +50,15 @@ func Run(logger lager.Logger, args []string, stop chan bool) {
 			case <-ticker.C:
 				ctx, _ := context.WithCancel(ctx)
 
-				stats, err := db.GetStatsAndReset(ctx)
-				if err != nil {
-					logger.Error("Failed to get stats from database", err)
-				}
+				for _, db := range dbs {
+					stats, err := db.GetStatsAndReset(ctx)
+					if err != nil {
+						logger.Error("Failed to get stats from database", err)
+					}
 
-				for _, stat := range stats {
-					metricsClient.EmitMetric(&stat)
+					for _, stat := range stats {
+						metricsClient.EmitMetric(&stat)
+					}
 				}
 			case <-quit:
 				ticker.Stop()

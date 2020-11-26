@@ -8,7 +8,7 @@ import (
 
 type Config struct {
 	LoggregatorConfig LoggregatorConfig `yaml:"loggregator"`
-	DatabaseConfig    DatabaseConfig    `yaml:"database"`
+	DatabaseConfigs   []DatabaseConfig  `yaml:"databases"`
 }
 
 type LoggregatorConfig struct {
